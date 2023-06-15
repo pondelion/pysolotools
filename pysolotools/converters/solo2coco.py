@@ -162,20 +162,31 @@ class SOLO2COCOConverter:
         keypoint_map = {}
         for ann_kpt in kp_ann.values:
             keypoints_vals, num_keypoints = [], 0
-            for k in COCO_KEYPOINTS:
-                for kpt in ann_kpt.keypoints:
-                    label = solo_kp_map[kpt.index]
-                    if label == k:
-                        keypoints_vals.extend(
-                            [
-                                int(np.floor(kpt.location[0])),
-                                int(np.floor(kpt.location[1])),
-                                kpt.state,
-                            ]
-                        )
-                        if int(kpt.state) != 0:
-                            num_keypoints += 1
-                        break
+            # for k in COCO_KEYPOINTS:
+            #     for kpt in ann_kpt.keypoints:
+            #         label = solo_kp_map[kpt.index]
+            #         if label == k:
+            #             keypoints_vals.extend(
+            #                 [
+            #                     int(np.floor(kpt.location[0])),
+            #                     int(np.floor(kpt.location[1])),
+            #                     kpt.state,
+            #                 ]
+            #             )
+            #             if int(kpt.state) != 0:
+            #                 num_keypoints += 1
+            #             break
+            for kpt in ann_kpt.keypoints:
+                label = solo_kp_map[kpt.index]
+                keypoints_vals.extend(
+                    [
+                        int(np.floor(kpt.location[0])),
+                        int(np.floor(kpt.location[1])),
+                        kpt.state,
+                    ]
+                )
+                if int(kpt.state) != 0:
+                    num_keypoints += 1
 
             keypoint_map[ann_kpt.instanceId] = (
                 num_keypoints,
